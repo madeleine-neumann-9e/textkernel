@@ -20,7 +20,7 @@ class Textkernel
   def extract!(resume_path)
     response = process_document(resume_path)
     if response.http.code == 200
-      document = response.body.dig(:process_document_response, :return)
+      document = response.body.dig(:extract_response, :return)
       profile = Hash.from_xml(document) if document
     end
     {code: 'Success', resume: profile}
@@ -38,7 +38,7 @@ class Textkernel
       filename = File.basename(URI.parse(file_path).path)
       file_buf = open(file_path).read
     end
-    client.call(:process_document, message: {
+    client.call(:extract, message: {
       account: account,
       username: username,
       password: password,
